@@ -1,59 +1,88 @@
 # AssessmentRiuFrontendJulianMunozVelazquez
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.1.
+Realizado con Angular 20 para MinData. Solo es frontend (se simula con localstorage el DB). Se utilizara Angular Material
 
-## Development server
+## Para correcr el proyecto
 
-To start a local development server, run:
+Instalar las dependencias:
+
+```bash
+npm install
+```
+
+Para arrancar el servidor local
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
 ## Building
 
-To build the project run:
+Para construir el proyecto
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Para correr los test
+Para ejecutar las pruebas unitarias con Karma, se utiliza el siguiente comando:
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
 
-For end-to-end (e2e) testing, run:
+# Indicaciones
 
-```bash
-ng e2e
-```
+Se debe utilizar la última versión LTS de Angular y de cualquier librería que se use en el proyecto.
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Desarrollar, utilizando Angular, una aplicación SPA que permita
+hacer un mantenimiento de súper héroes:
 
-## Additional Resources
+**- Se deberá crear una serie de servicios que permitan:**
+• Registrar un nuevo super heroe.
+• Consultar todos los súper héroes.
+• Consultar un único súper héroe por id.
+• Consultar todos los súper héroes que contienen, en su nombre, el valor
+de un parámetro enviado en la petición. Por ejemplo, si enviamos
+“man” devolverá “Spiderman”, “Superman”, “Manolito el fuerte”, etc.
+• Modificar un súper héroe.
+• Eliminar un súper héroe.
+• Test unitario de este servicio.
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+**- Se deberá crear un Componente que, a partir del servicio anterior:**
+• Mostrará una lista paginada de héroes donde aparecerán botones de añadir,
+editar y borrar.
+• Encima de esta lista paginada, se mostrará un input para filtrar por el héroe
+seleccionado.
+• Al pulsar el botón de añadir se generará un formulario vacío con las
+validaciones que se estimen oportunas. Después de dar de alta el nuevo
+héroe se volverá a la lista paginada.
+• Al pulsar el botón de edición se generará un formulario con los datos del
+héroe seleccionado y se permitirá modificar su información. Una vez editado
+se deberá volver a la lista paginada.
+• Al pulsar el botón de borrar, se preguntará si se está seguro que se desea
+borrar el héroe y, al confirmarlo, lo borrará.
+• Test unitario de este componente.
+
+## Puntos a tener en cuenta:
+• La información de súper héroes se guardará dentro del servicio. (No hace falta
+un backend).
+• Se valorarán las soluciones propuestas para cada punto, el modelo de
+datos y formato del código.
+• La prueba se debe presentar en un repositorio de Git. Se sugiere ser ordenado
+y descriptivos con los commits. Al momento de la entrega indicar el Repositorio.
+
+## Puntos opcionales de mejora:
+• Se puede utilizar Angular Materia.
+• Rutas y navegación de la página.
+• Interceptor para mostrar un elemento “loading” mientras se realiza alguna
+operación como “borrado” o “edición”.
+• Directiva para que al crear o editar en la caja de texto del nombre del
+héroe, siempre se muestre en mayúscula.
+• Comunicación entre componentes orientada a eventos.
+
+## Se valora positifvamente:
+• Cómo se construye el modelo de datos.
+• Uso de programación reactiva.
+• Código legible usando lambdas.
