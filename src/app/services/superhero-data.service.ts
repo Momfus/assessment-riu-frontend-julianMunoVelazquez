@@ -36,7 +36,6 @@ export class SuperheroDataService {
       start,
       Math.min(start + pageSize, items.length)
     );
-    console.log(pageIndex);
 
     return newValue;
   });
@@ -64,7 +63,6 @@ export class SuperheroDataService {
   setPageIndex(pageIndex: number): void {
     this.pagination.update((prev) => {
       const newIndex = Math.max(0, Math.min(pageIndex, this.totalPages() - 1));
-      console.log('Updating pageIndex:', { old: prev.pageIndex, new: newIndex }); // Debug
       return { ...prev, pageIndex: newIndex };
     });
   }
