@@ -1,12 +1,14 @@
 
+export type UniverseHero = 'DC' | 'Marvel' | 'Other';
+
 export interface SuperHero {
   id: string;
   name: string;
   realName?: string;
-  universe: 'DC' | 'Marvel' | 'Other';
+  universe: UniverseHero;
   powers: string[];
   weaknesses?: string[];
   avatar?: string;
-  createat?: Date;
-  updatedat?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
