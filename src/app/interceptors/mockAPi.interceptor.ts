@@ -49,5 +49,33 @@ export const mockHttpInterceptor: HttpInterceptorFn = (req, next) => {
     ).pipe(delay(mockDelay));
   }
 
+  if (req.method === 'PUT' && req.url.includes('/heroes/')) {
+    const id = req.url.split('/').pop();
+    const heroData = req.body as SuperHero;
+
+    const currentHeroes = storage.getAll()();
+    const index = currentHeroes.findIndex(h => h.id === id);
+
+    if (index !== -1) {
+      const updatedHero = {
+        ...heroData,
+        updatedAt: new Date()
+      };
+
+      const newHeroes = [...currentHeroes];
+      newHeroes[index] = updatedHero;
+      storage.saveAll(newHeroes);
+
+      return of(
+        new HttpResponse({
+          status: 200,
+          body: updatedHero,
+        })
+      ).pipe(delay(mockDelay));
+    }
+  }
+
+
+
   return next(req);
 };

@@ -12,17 +12,25 @@ export class SuperheroApiService {
 
   private readonly MOCK_PREFIX = '/api-mock';
 
-
-  // Obtener todos los supeheroes
   getAll(): Observable<SuperHero[]> {
     return this.http.get<SuperHero[]>(`${this.MOCK_PREFIX}/heroes`);
   }
 
-  // Crear un super heroe
   create(hero: Omit<SuperHero, 'id' | 'createdAt' | 'updatedAt'>): Observable<SuperHero> {
     return this.http.post<SuperHero>(`${this.MOCK_PREFIX}/heroes`, hero);
   }
 
+  update(hero: SuperHero): Observable<SuperHero> {
+    return this.http.put<SuperHero>(`${this.MOCK_PREFIX}/heroes/${hero.id}`, hero);
+  }
+
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.MOCK_PREFIX}/heroes/${id}`);
+  }
+
+  getById(id: string): Observable<SuperHero> {
+    return this.http.get<SuperHero>(`${this.MOCK_PREFIX}/heroes/${id}`);
+  }
 
 
 }

@@ -1,45 +1,51 @@
 <div class="container">
-
   <!-- Tabla -->
   <div class="table-container">
-    @if ( !spinnerSerrvice.isLoading() ) {
-      <mat-table [dataSource]="dataService.paginatedHeroes()">
-        <!-- Columna Nombre -->
-        <ng-container matColumnDef="name">
-          <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-          <mat-cell *matCellDef="let hero"> {{ hero.name }} </mat-cell>
-        </ng-container>
+    @if (dataService.paginatedHeroes().length > 0) {
+    <mat-table [dataSource]="dataService.paginatedHeroes()">
+      <!-- Columna Nombre -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+        <mat-cell *matCellDef="let hero"> {{ hero.name }} </mat-cell>
+      </ng-container>
 
-        <!-- Columna Editorial -->
-        <ng-container matColumnDef="publisher">
-          <mat-header-cell *matHeaderCellDef> Publisher </mat-header-cell>
-          <mat-cell *matCellDef="let hero"> {{ hero.universe }} </mat-cell>
-        </ng-container>
+      <!-- Columna Editorial -->
+      <ng-container matColumnDef="publisher">
+        <mat-header-cell *matHeaderCellDef> Publisher </mat-header-cell>
+        <mat-cell *matCellDef="let hero"> {{ hero.universe }} </mat-cell>
+      </ng-container>
 
-        <!-- Columna Acciones -->
-        <ng-container matColumnDef="actions">
-          <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
-          <mat-cell *matCellDef="let hero">
-            <button mat-icon-button color="primary" (click)="editHero(hero)">
-              <mat-icon>edit</mat-icon>
-            </button>
-            <button mat-icon-button color="warn" (click)="deleteHero(hero.id)">
-              <mat-icon>delete</mat-icon>
-            </button>
-          </mat-cell>
-        </ng-container>
+      <!-- Columna Acciones -->
+      <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+        <mat-cell *matCellDef="let hero">
+          <button mat-icon-button color="primary" (click)="editHero(hero)">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="warn" (click)="deleteHero(hero.id)">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
 
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
-
-      <!-- Paginación -->
-      <mat-paginator [length]="dataService.pagination().totalItems"
-                     [pageSize]="dataService.pagination().pageSize"
-                     [pageIndex]="dataService.pagination().pageIndex"
-                     [pageSizeOptions]="[5, 10, 20]"
-                     (page)="onPageChange($event)">
-      </mat-paginator>
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+    </mat-table>
+    } @else {
+    <div class="no-data-message">
+      <mat-icon>warning</mat-icon>
+      <p>No Heroes Data</p>
+    </div>
     }
+
+    <!-- Paginación -->
+    <mat-paginator
+      [length]="dataService.pagination().totalItems"
+      [pageSize]="dataService.pagination().pageSize"
+      [pageIndex]="dataService.pagination().pageIndex"
+      [pageSizeOptions]="[5, 10, 20]"
+      (page)="onPageChange($event)"
+    >
+    </mat-paginator>
   </div>
 </div>

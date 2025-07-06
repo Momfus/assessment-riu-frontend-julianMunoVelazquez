@@ -37,6 +37,7 @@ export class SuperheroNavbarComponent {
   createHero() {
     this.dialog.open(SuperheroModalFormComponent, {
       width: '500px',
+      disableClose: true,
       data: {
         hero: undefined,
       }

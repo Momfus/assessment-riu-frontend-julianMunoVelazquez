@@ -12,6 +12,7 @@ import {
 } from '@angular/material/dialog';
 import { SuperheroDataService } from '@services/superhero-data.service';
 import { SuperHero } from '@interfaces/superhero.interface';
+import { SpinnerService } from '@shared/services/spinner.service';
 
 @Component({
   selector: 'app-superhero-modal-form',
@@ -30,6 +31,7 @@ import { SuperHero } from '@interfaces/superhero.interface';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuperheroModalFormComponent {
+  spin = inject(SpinnerService)
   private readonly dialogRef = inject(
     MatDialogRef<SuperheroModalFormComponent>
   );
@@ -39,13 +41,26 @@ export class SuperheroModalFormComponent {
   readonly data = inject<{ hero?: SuperHero }>(MAT_DIALOG_DATA);
 
   onFormSubmit(heroData: Partial<SuperHero>) {
+
+    // Esto es para asegurarme los campos requeridos
+    const safeData = {
+      ...heroData,
+      name: heroData.name!,
+      universe: heroData.universe!,
+      powers: heroData.powers!
+    } as Omit<SuperHero, 'id' | 'createdAt' | 'updatedAt'>;
+
     if (this.data?.hero) {
       // Edición
       console.log('Edición de héroe:', heroData);
 
     } else {
-      // Creación
-      console.log('Creación de héroe:', heroData);
+
+      this.dataService.create(safeData).subscribe(() => {
+        this.dataService.refreshData();
+        this.dialogRef.close();
+      });
+
     }
   }
 
