@@ -8,21 +8,20 @@ import {
 import { SuperheroDataService } from '@services/superhero-data.service';
 import { rxResource } from '@angular/core/rxjs-interop';
 import { Observable } from 'rxjs';
-import { SuperHero, UniverseHero } from '@interfaces/superhero.interface';
+import { SuperHero } from '@interfaces/superhero.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
-import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { SpinnerService } from '@shared/services/spinner.service';
 
 @Component({
   selector: 'app-superhero-list',
   imports: [
     MatPaginatorModule,
     MatTableModule,
-    MatProgressSpinner,
     MatButtonModule,
     MatIconModule,
     MatInputModule,
@@ -33,6 +32,7 @@ import { MatInputModule } from '@angular/material/input';
 })
 export class SuperheroListComponent implements OnInit {
   dataService = inject(SuperheroDataService);
+  spinnerSerrvice = inject(SpinnerService);
   router = inject(Router);
   route = inject(ActivatedRoute);
 
@@ -56,8 +56,6 @@ export class SuperheroListComponent implements OnInit {
   });
 
   ngOnInit() {
-    // setTimeout(() => this.createHero(), 1000); // @TODO: Test temporal
-
     // Chequea con los queryParams de la ruta actual
     this.route.queryParams.subscribe((params) => {
       const page = params['page'] ? Number(params['page']) - 1 : 0;
@@ -75,26 +73,6 @@ export class SuperheroListComponent implements OnInit {
         pageSize: event.pageSize,
       },
       queryParamsHandling: 'merge',
-    });
-  }
-
-  //@TODO: Mover a otro componente para separar de la paginación
-  createHero() {
-    const testHero = {
-      name: 'IronMan-' + Math.floor(Math.random() * 1000),
-      power: 'Tecnología',
-      age: 48,
-      universe: 'Marvel' as UniverseHero,
-      powers: ['Alta tecnología'],
-    };
-
-    this.dataService.create(testHero).subscribe({
-      next: (newHero) => {
-        console.log('Héroe creado:', newHero);
-        const value = this.dataService.allHeroes();
-        console.log(value);
-      },
-      error: (err) => console.error('Error al crear héroe:', err),
     });
   }
 

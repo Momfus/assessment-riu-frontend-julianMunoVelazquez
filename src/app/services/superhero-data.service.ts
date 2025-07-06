@@ -85,8 +85,4 @@ export class SuperheroDataService {
     return Math.max(1, Math.ceil(totalItems / pageSize));
   }
 
-  // getters
-  get isLoading() {
-    return this.api.isLoading();
-  }
 }

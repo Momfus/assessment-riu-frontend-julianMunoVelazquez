@@ -1,11 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatButtonModule } from '@angular/material/button';
+import { SuperheroNavbarComponent } from '@superheroes/shared/superhero-navbar/superhero-navbar.component';
 
 @Component({
   selector: 'app-superheroes-layout',
-  imports: [RouterOutlet, MatToolbarModule, MatButtonModule],
+  imports: [RouterOutlet, SuperheroNavbarComponent],
   styles: [
     `
       .spacer {
@@ -22,7 +21,5 @@ import { MatButtonModule } from '@angular/material/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuperheroesLayoutComponent {
-  createHero() {
-    console.log('Create Hero');
-  }
+
 }

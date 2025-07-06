@@ -2,9 +2,7 @@
 
   <!-- Tabla -->
   <div class="table-container">
-    @if (dataService.isLoading ) {
-      <mat-spinner></mat-spinner>
-    } @else {
+    @if ( !spinnerSerrvice.isLoading() ) {
       <mat-table [dataSource]="dataService.paginatedHeroes()">
         <!-- Columna Nombre -->
         <ng-container matColumnDef="name">

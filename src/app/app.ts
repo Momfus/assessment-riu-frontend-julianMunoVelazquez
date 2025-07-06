@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterOutlet } from '@angular/router';
+import { SpinnerComponent } from "./shared/spinner/spinner.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, SpinnerComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
