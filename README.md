@@ -2,36 +2,6 @@
 
 Realizado con Angular 20 para MinData. Solo es frontend (se simula con localstorage el DB). Se utilizara Angular Material
 
-## Para correcr el proyecto
-
-Instalar las dependencias:
-
-```bash
-npm install
-```
-
-Para arrancar el servidor local
-
-```bash
-ng serve
-```
-
-## Building
-
-Para construir el proyecto
-
-```bash
-ng build
-```
-
-## Para correr los test
-Para ejecutar las pruebas unitarias con Karma, se utiliza el siguiente comando:
-
-```bash
-ng test
-```
-
-
 # Indicaciones
 
 Se debe utilizar la última versión LTS de Angular y de cualquier librería que se use en el proyecto.
@@ -86,3 +56,76 @@ héroe, siempre se muestre en mayúscula.
 * Cómo se construye el modelo de datos.
 * Uso de programación reactiva.
 * Código legible usando lambdas.
+
+
+## Para correcr el proyecto
+
+Instalar las dependencias:
+
+```bash
+npm install
+```
+
+Para arrancar el servidor local
+
+```bash
+ng serve
+```
+
+## Building
+
+Para construir el proyecto
+
+```bash
+ng build
+```
+
+## Para correr los test
+Para ejecutar las pruebas unitarias con Karma, se utiliza el siguiente comando:
+
+```bash
+ng test
+```
+
+# Dockerización de la Aplicación Angular Superheroes
+
+##Comandos Rápidos
+
+## Desarrollo (con Hot Reload)
+```bash
+# Ejecutar en modo desarrollo
+docker-compose --profile dev up --build
+
+# Acceder a la aplicación
+# http://localhost:4200
+```
+
+## Producción
+```bash
+# Ejecutar en modo producción
+docker-compose --profile prod up --build
+
+# Acceder a la aplicación
+# http://localhost:80
+```
+
+
+## Comandos Docker 
+
+### Build de la Imagen
+```bash
+# Build de producción
+docker build -t superheroes-app .
+
+# Build de desarrollo
+docker build -f Dockerfile.dev -t superheroes-app-dev .
+```
+
+### Ejecutar Contenedor
+```bash
+# Producción
+docker run -p 80:80 superheroes-app
+
+# Desarrollo
+docker run -p 4200:4200 -v $(pwd):/app superheroes-app-dev
+```
