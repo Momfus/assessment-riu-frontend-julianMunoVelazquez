@@ -3,6 +3,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { UniverseHero } from '@interfaces/superhero.interface';
 import { SuperheroDataService } from '@services/superhero-data.service';
+import { SuperheroModalFormComponent } from '../superhero-modal-form/superhero-modal-form.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'superhero-navbar',
@@ -19,14 +21,29 @@ import { SuperheroDataService } from '@services/superhero-data.service';
       }
     `,
   ],
-  templateUrl: './superhero-navbar.component.html',
+  template: `
+    <mat-toolbar class="custom-toolbar">
+      <span class="ml-4">Hero List</span>
+      <span class="spacer"></span>
+      <button matButton="filled" (click)="createHero()">Add Hero</button>
+    </mat-toolbar>
+  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuperheroNavbarComponent {
-
   private dataService = inject(SuperheroDataService);
+  private dialog = inject(MatDialog);
 
   createHero() {
+    this.dialog.open(SuperheroModalFormComponent, {
+      width: '500px',
+      data: {
+        hero: undefined,
+      }
+    });
+  }
+
+  testCreation() {
     const testHero = {
       name: 'IronMan-' + Math.floor(Math.random() * 1000),
       power: 'Tecnología',
@@ -43,7 +60,6 @@ export class SuperheroNavbarComponent {
       },
       error: (err) => console.error('Error al crear héroe:', err),
     });
+
   }
-
-
 }

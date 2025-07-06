@@ -8,7 +8,6 @@ export interface SuperHero {
   universe: UniverseHero;
   powers: string[];
   weaknesses?: string[];
-  avatar?: string;
   createdAt?: Date;
   updatedAt?: Date;
 }

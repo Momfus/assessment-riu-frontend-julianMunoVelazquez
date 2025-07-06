@@ -1,0 +1,68 @@
+<!-- superhero-form.component.html -->
+<form [formGroup]="heroForm" (ngSubmit)="onSubmit()" class="w-full">
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+    <!-- Nombre del Héroe -->
+    <mat-form-field  class="w-full">
+      <mat-label>Hero Name</mat-label>
+      <input matInput formControlName="name" appToUpperCase required>
+      <mat-error *ngIf="heroForm.get('name')?.hasError('required')">
+        Name is required
+      </mat-error>
+      <mat-error *ngIf="heroForm.get('name')?.hasError('minlength')">
+        Minimum 3 characters
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Nombre Real -->
+    <mat-form-field class="w-full">
+      <mat-label>Real Name</mat-label>
+      <input matInput formControlName="realName" appToUpperCase>
+    </mat-form-field>
+
+    <!-- Universo (Dropdown) -->
+    <mat-form-field class="w-full">
+      <mat-label>Universe</mat-label>
+      <mat-select formControlName="universe" required>
+        <mat-option *ngFor="let universe of universes()" [value]="universe">
+          {{ universe }}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="heroForm.get('universe')?.hasError('required')">
+        Please select a universe
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Poderes (Textarea) -->
+    <mat-form-field class="w-full md:col-span-2">
+      <mat-label>Powers (comma separated)</mat-label>
+      <textarea matInput formControlName="powers" rows="2" required></textarea>
+      <mat-hint>Example: Flight, Super strength, Laser vision</mat-hint>
+      <mat-error *ngIf="heroForm.get('powers')?.hasError('required')">
+        At least one power is required
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Debilidades (Textarea) -->
+    <mat-form-field class="w-full md:col-span-2">
+      <mat-label>Weaknesses (comma separated)</mat-label>
+      <textarea matInput formControlName="weaknesses" rows="2"></textarea>
+      <mat-hint>Example: Kryptonite, Magic, Water</mat-hint>
+    </mat-form-field>
+
+    <!-- Acciones -->
+    <div class="flex justify-end gap-2 md:col-span-2 pt-2">
+      <button type="button" mat-stroked-button color="warn" (click)="onCancel()">
+        Cancel
+      </button>
+      <button
+        type="submit"
+        matButton="filled"
+        color="primary"
+        [disabled]="!heroForm.valid"
+        class="ml-2"
+      >
+        {{ hero() ? 'Update Hero' : 'Create Hero' }}
+      </button>
+    </div>
+  </div>
+</form>
