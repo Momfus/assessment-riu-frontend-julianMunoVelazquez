@@ -18,6 +18,7 @@ import { MatInputModule } from '@angular/material/input';
 import { SpinnerService } from '@shared/services/spinner.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SuperheroModalFormComponent } from '@superheroes/shared/superhero-modal-form/superhero-modal-form.component';
+import { SuperheroModalConfirmComponent } from '@superheroes/shared/superhero-modal-confirm/superhero-modal-confirm.component';
 
 @Component({
   selector: 'app-superhero-list',
@@ -39,7 +40,6 @@ export class SuperheroListComponent implements OnInit {
   spinnerSerrvice = inject(SpinnerService);
   router = inject(Router);
   route = inject(ActivatedRoute);
-
 
   displayedColumns = ['name', 'publisher', 'actions'];
 
@@ -84,18 +84,31 @@ export class SuperheroListComponent implements OnInit {
   editHero(hero: SuperHero) {
     const dialogRef = this.dialog.open(SuperheroModalFormComponent, {
       width: '500px',
-      data: { hero }
+      data: { hero },
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result) => {
       if (result) {
         this.dataService.refreshData();
       }
     });
   }
 
-  deleteHero(heroId: String) {
-    //@TODO. implementar logica de borrado
-    console.log('Borrar héroe con ID:', heroId);
+  deleteHero(hero: SuperHero) {
+    const dialogRef = this.dialog.open(SuperheroModalConfirmComponent, {
+      width: '350px',
+      data: {
+        title: 'Confirm Delete',
+        message: `Are you sure you want to delete ${hero.name}?`,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.dataService.delete(hero.id).subscribe(() => {
+          this.dataService.refreshData();
+        });
+      }
+    });
   }
 }

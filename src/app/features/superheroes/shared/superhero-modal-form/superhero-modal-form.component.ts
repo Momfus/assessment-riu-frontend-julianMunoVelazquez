@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   inject,
 } from '@angular/core';
 import { SuperheroFormComponent } from '../superhero-form/superhero-form.component';
@@ -12,7 +11,6 @@ import {
 } from '@angular/material/dialog';
 import { SuperheroDataService } from '@services/superhero-data.service';
 import { SuperHero } from '@interfaces/superhero.interface';
-import { SpinnerService } from '@shared/services/spinner.service';
 
 @Component({
   selector: 'app-superhero-modal-form',
