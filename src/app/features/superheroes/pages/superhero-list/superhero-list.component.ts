@@ -16,6 +16,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { SpinnerService } from '@shared/services/spinner.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SuperheroModalFormComponent } from '@superheroes/shared/superhero-modal-form/superhero-modal-form.component';
 
 @Component({
   selector: 'app-superhero-list',
@@ -31,10 +33,13 @@ import { SpinnerService } from '@shared/services/spinner.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuperheroListComponent implements OnInit {
+  private dialog = inject(MatDialog);
+
   dataService = inject(SuperheroDataService);
   spinnerSerrvice = inject(SpinnerService);
   router = inject(Router);
   route = inject(ActivatedRoute);
+
 
   displayedColumns = ['name', 'publisher', 'actions'];
 
@@ -77,8 +82,16 @@ export class SuperheroListComponent implements OnInit {
   }
 
   editHero(hero: SuperHero) {
-    //@TODO. implementar logica de edicion
-    console.log('Editar héroe:', hero);
+    const dialogRef = this.dialog.open(SuperheroModalFormComponent, {
+      width: '500px',
+      data: { hero }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.dataService.refreshData();
+      }
+    });
   }
 
   deleteHero(heroId: String) {

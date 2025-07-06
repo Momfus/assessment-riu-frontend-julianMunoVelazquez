@@ -22,7 +22,7 @@ export const mockHttpInterceptor: HttpInterceptorFn = (req, next) => {
         status: 200,
         body: heroes,
       })
-    ).pipe(delay(mockDelay));
+    ).pipe(delay(100));
   }
 
   if (req.method === 'POST' && req.url.endsWith('/heroes')) {

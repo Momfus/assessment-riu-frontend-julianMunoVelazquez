@@ -32,10 +32,16 @@
       <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
     </mat-table>
     } @else {
-    <div class="no-data-message">
-      <mat-icon>warning</mat-icon>
-      <p>No Heroes Data</p>
-    </div>
+      @if ( spinnerSerrvice.isLoading() ) {
+        <div class="w-full flex flex-col items-center justify-center">
+          <p>Loading Heroes...</p>
+        </div>
+      } @else {
+        <div class="w-full flex flex-col items-center justify-center">
+          <mat-icon>warning</mat-icon>
+          <p>No Heroes Data</p>
+        </div>
+      }
     }
 
     <!-- Paginación -->

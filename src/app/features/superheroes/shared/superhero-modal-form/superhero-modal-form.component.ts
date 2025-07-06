@@ -31,40 +31,53 @@ import { SpinnerService } from '@shared/services/spinner.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuperheroModalFormComponent {
-  spin = inject(SpinnerService)
   private readonly dialogRef = inject(
     MatDialogRef<SuperheroModalFormComponent>
   );
   private readonly dataService = inject(SuperheroDataService);
-  private readonly destroyRef = inject(DestroyRef);
 
   readonly data = inject<{ hero?: SuperHero }>(MAT_DIALOG_DATA);
 
   onFormSubmit(heroData: Partial<SuperHero>) {
-
     // Esto es para asegurarme los campos requeridos
     const safeData = {
       ...heroData,
       name: heroData.name!,
       universe: heroData.universe!,
-      powers: heroData.powers!
+      powers: heroData.powers!,
     } as Omit<SuperHero, 'id' | 'createdAt' | 'updatedAt'>;
 
     if (this.data?.hero) {
       // Edición
-      console.log('Edición de héroe:', heroData);
-
+      this.dataService
+        .update({
+          ...safeData,
+          id: this.data.hero.id,
+          updatedAt: new Date(),
+        })
+        .subscribe({
+          next: () => this.successHeroEditCreate(),
+          error: (error: Error) => {
+            console.error('Error al editar héroe:', error);
+          },
+        });
     } else {
-
-      this.dataService.create(safeData).subscribe(() => {
-        this.dataService.refreshData();
-        this.dialogRef.close();
+      // Creación
+      this.dataService.create(safeData).subscribe({
+        next: () => this.successHeroEditCreate(),
+        error: (error: Error) => {
+          console.error('Error al crear héroe:', error);
+        },
       });
-
     }
   }
 
   onCancel() {
+    this.dialogRef.close();
+  }
+
+  private successHeroEditCreate() {
+    this.dataService.refreshData();
     this.dialogRef.close();
   }
 }

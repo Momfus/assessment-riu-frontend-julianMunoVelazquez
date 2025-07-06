@@ -4,10 +4,7 @@
 
 html {
   color-scheme: light dark;
-
 }
-
-
 
 html,
 body {
@@ -20,7 +17,6 @@ body {
   color: var(--mat-sys-on-surface);
 }
 
-
 .overlay {
   position: fixed;
   width: 100%;
@@ -30,5 +26,4 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-
 }

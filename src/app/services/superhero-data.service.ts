@@ -55,6 +55,10 @@ export class SuperheroDataService {
     return this.api.create(hero).pipe(tap(() => this.refreshData()));
   }
 
+  update(hero: SuperHero) {
+    return this.api.update(hero).pipe(tap(() => this.refreshData()));
+  }
+
   refreshData() {
     this.refresh$.next();
   }
