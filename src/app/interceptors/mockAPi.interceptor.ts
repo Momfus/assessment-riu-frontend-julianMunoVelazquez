@@ -75,6 +75,19 @@ export const mockHttpInterceptor: HttpInterceptorFn = (req, next) => {
     }
   }
 
+  if (req.method === 'DELETE' && req.url.includes('/heroes/')) {
+    const id = req.url.split('/').pop();
+    const currentHeroes = storage.getAll()();
+    const newHeroes = currentHeroes.filter(h => h.id !== id);
+
+    storage.saveAll(newHeroes);
+
+    return of(
+      new HttpResponse({
+        status: 204,
+      })
+    ).pipe(delay(mockDelay));
+  }
 
 
   return next(req);

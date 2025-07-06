@@ -3,12 +3,15 @@ import { SuperheroApiService } from './superhero-api.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { SuperHero } from '@interfaces/superhero.interface';
 import { startWith, Subject, switchMap, tap } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SuperheroDataService {
   private api = inject(SuperheroApiService);
+  private router = inject(Router);
+  private activatedRoute = inject(ActivatedRoute);
 
   private refresh$ = new Subject<void>();
 
@@ -41,23 +44,44 @@ export class SuperheroDataService {
   });
 
   constructor() {
-
     effect(() => {
       const total = this.allHeroes().length;
       this.pagination.update((prev) => {
-        return prev.totalItems !== total ? { ...prev, totalItems: total } : prev;
+        return prev.totalItems !== total
+          ? { ...prev, totalItems: total }
+          : prev;
       });
+      this.adjustPagination();
     });
-
   }
 
   create(hero: Omit<SuperHero, 'id' | 'createdAt' | 'updatedAt'>) {
-    return this.api.create(hero).pipe(tap(() => this.refreshData()));
+    return this.api.create(hero).pipe(
+      tap(() => {
+        this.refreshData();
+        this.adjustPagination();
+      })
+    );
   }
 
   update(hero: SuperHero) {
-    return this.api.update(hero).pipe(tap(() => this.refreshData()));
+    return this.api.update(hero).pipe(
+      tap(() => {
+        this.refreshData();
+        this.adjustPagination();
+      })
+    );
   }
+
+  delete(id: string) {
+    return this.api.delete(id).pipe(
+      tap(() => {
+        this.refreshData();
+        this.adjustPagination();
+      })
+    );
+  }
+
 
   refreshData() {
     this.refresh$.next();
@@ -79,7 +103,7 @@ export class SuperheroDataService {
       return {
         ...prev,
         pageSize,
-        pageIndex: newIndex
+        pageIndex: newIndex,
       };
     });
   }
@@ -89,4 +113,28 @@ export class SuperheroDataService {
     return Math.max(1, Math.ceil(totalItems / pageSize));
   }
 
+  private adjustPagination() {
+    const total = this.allHeroes().length;
+    const { pageIndex, pageSize } = this.pagination();
+    const maxPage = Math.max(0, Math.ceil(total / pageSize) - 1);
+
+    if (pageIndex > maxPage) {
+      const newPageIndex = maxPage;
+      this.pagination.update((prev) => ({
+        ...prev,
+        pageIndex: newPageIndex,
+      }));
+
+      // Actualizar los queryParams en la URL
+      this.router.navigate([], {
+        relativeTo: this.activatedRoute,
+        queryParams: {
+          page: newPageIndex + 1,
+          pageSize: pageSize,
+        },
+        queryParamsHandling: 'merge',
+        replaceUrl: true,
+      });
+    }
+  }
 }
