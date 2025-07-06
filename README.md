@@ -74,7 +74,7 @@ datos y formato del código.
 y descriptivos con los commits. Al momento de la entrega indicar el Repositorio.
 
 ## Puntos opcionales de mejora:
-* Se puede utilizar Angular Materia.
+* Se puede utilizar Angular Material.
 * Rutas y navegación de la página.
 * Interceptor para mostrar un elemento “loading” mientras se realiza alguna
 operación como “borrado” o “edición”.

@@ -3,6 +3,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { SuperheroModalFormComponent } from '../superhero-modal-form/superhero-modal-form.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'superhero-navbar',
@@ -21,15 +22,18 @@ import { MatDialog } from '@angular/material/dialog';
   ],
   template: `
     <mat-toolbar class="custom-toolbar">
-      <span class="ml-4">Hero List</span>
+      <button class="ml-4 cursor-pointer font-bold" (click)="goHome()">Hero List</button>
       <span class="spacer"></span>
-      <button matButton="filled" (click)="createHero()">Add Hero</button>
+      @if( isBaseRoute ) {
+        <button matButton="filled" (click)="createHero()">Add Hero</button>
+      }
     </mat-toolbar>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SuperheroNavbarComponent {
   private dialog = inject(MatDialog);
+  private router = inject(Router);
 
   createHero() {
     this.dialog.open(SuperheroModalFormComponent, {
@@ -39,6 +43,15 @@ export class SuperheroNavbarComponent {
         hero: undefined,
       }
     });
+  }
+
+  goHome() {
+    this.router.navigate(['']);
+  }
+
+  get isBaseRoute(): boolean {
+    const currentRoute = this.router.url;
+    return currentRoute === '/heroes';
   }
 
 }
