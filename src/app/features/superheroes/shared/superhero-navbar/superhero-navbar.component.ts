@@ -50,8 +50,9 @@ export class SuperheroNavbarComponent {
   }
 
   get isBaseRoute(): boolean {
-    const currentRoute = this.router.url;
-    return currentRoute === '/heroes';
+    const urlTree = this.router.parseUrl(this.router.url);
+    return urlTree.root.children['primary']?.segments.length === 1 &&
+           urlTree.root.children['primary'].segments[0].path === 'heroes';
   }
 
 }

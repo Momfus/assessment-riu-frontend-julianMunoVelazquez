@@ -47,20 +47,50 @@ export class SuperheroDataService {
       this.pagination.update((prev) => {
         return prev.totalItems !== total ? { ...prev, totalItems: total } : prev;
       });
+      this.adjustPagination();
     });
 
   }
 
   create(hero: Omit<SuperHero, 'id' | 'createdAt' | 'updatedAt'>) {
-    return this.api.create(hero).pipe(tap(() => this.refreshData()));
+    return this.api.create(hero).pipe(
+      tap(() => {
+        this.refreshData();
+        this.adjustPagination();
+      })
+    );
   }
 
+
   update(hero: SuperHero) {
-    return this.api.update(hero).pipe(tap(() => this.refreshData()));
+    return this.api.update(hero).pipe(
+      tap(() => {
+        this.refreshData();
+        this.adjustPagination();
+      })
+    );
   }
 
   delete(id: string) {
-    return this.api.delete(id).pipe(tap(() => this.refreshData()));
+    return this.api.delete(id).pipe(
+      tap(() => {
+        this.refreshData();
+        this.adjustPagination();
+      })
+    );
+  }
+
+  private adjustPagination() {
+    const total = this.allHeroes().length;
+    const { pageIndex, pageSize } = this.pagination();
+    const maxPage = Math.max(0, Math.ceil(total / pageSize) - 1);
+
+    if (pageIndex > maxPage) {
+      this.pagination.update(prev => ({
+        ...prev,
+        pageIndex: maxPage
+      }));
+    }
   }
 
   refreshData() {
