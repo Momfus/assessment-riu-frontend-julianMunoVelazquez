@@ -36,7 +36,6 @@ export class SuperheroDataService {
       start,
       Math.min(start + pageSize, items.length)
     );
-    console.log(pageIndex);
 
     return newValue;
   });
@@ -56,6 +55,10 @@ export class SuperheroDataService {
     return this.api.create(hero).pipe(tap(() => this.refreshData()));
   }
 
+  update(hero: SuperHero) {
+    return this.api.update(hero).pipe(tap(() => this.refreshData()));
+  }
+
   refreshData() {
     this.refresh$.next();
   }
@@ -64,7 +67,6 @@ export class SuperheroDataService {
   setPageIndex(pageIndex: number): void {
     this.pagination.update((prev) => {
       const newIndex = Math.max(0, Math.min(pageIndex, this.totalPages() - 1));
-      console.log('Updating pageIndex:', { old: prev.pageIndex, new: newIndex }); // Debug
       return { ...prev, pageIndex: newIndex };
     });
   }
@@ -87,8 +89,4 @@ export class SuperheroDataService {
     return Math.max(1, Math.ceil(totalItems / pageSize));
   }
 
-  // getters
-  get isLoading() {
-    return this.api.isLoading();
-  }
 }

@@ -1,70 +1,36 @@
-import { inject, Injectable, signal } from '@angular/core';
-import { SuperheroStorageService } from './superhero-storage.service';
-import { delay, Observable, of, tap } from 'rxjs';
+import { inject, Injectable } from '@angular/core';
+import { Observable} from 'rxjs';
 import { SuperHero } from '@interfaces/superhero.interface';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SuperheroApiService {
 
-  isLoading = signal(false);
-  lastError = signal<string | null>(null);
+  private http = inject(HttpClient);
 
-  private storage = inject(SuperheroStorageService);
+  private readonly MOCK_PREFIX = '/api-mock';
 
-  // Obtener todos los supeheroes
-  getAll() {
-    this.isLoading.set(true);
-    this.lastError.set(null);
-
-    this._startRequest();
-    return of(this.storage.getAll()()).pipe(
-      delay( this._generateRandomDelay() ),
-      this._finalizeRequest()
-    )
+  getAll(): Observable<SuperHero[]> {
+    return this.http.get<SuperHero[]>(`${this.MOCK_PREFIX}/heroes`);
   }
 
-  // Crear un super heroe
-  create( hero: Omit<SuperHero, 'id' | 'createdAt' | 'updatedAt'>) {
-    this._startRequest();
-
-    const newHero: SuperHero = {
-      ...hero,
-      id: crypto.randomUUID(),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    };
-
-    const currentHeroes = this.storage.getAll()();
-    this.storage.saveAll([...currentHeroes, newHero]);
-    return of(newHero).pipe(
-      delay( this._generateRandomDelay() ),
-      this._finalizeRequest()
-    )
+  create(hero: Omit<SuperHero, 'id' | 'createdAt' | 'updatedAt'>): Observable<SuperHero> {
+    return this.http.post<SuperHero>(`${this.MOCK_PREFIX}/heroes`, hero);
   }
 
-  private _startRequest() {
-    this.isLoading.set(true);
-    this.lastError.set(null);
+  update(hero: SuperHero): Observable<SuperHero> {
+    return this.http.put<SuperHero>(`${this.MOCK_PREFIX}/heroes/${hero.id}`, hero);
   }
 
-  private _finalizeRequest<T>() {
-    return (source: Observable<T> ) => {
-      return source.pipe(
-        tap({
-          next: () => this.isLoading.set(false),
-          error: (error) => {
-            this.isLoading.set(false);
-            this.lastError.set(error.message || 'An error occurred');
-          }
-        })
-      )
-    }
+  delete(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.MOCK_PREFIX}/heroes/${id}`);
   }
 
-  private _generateRandomDelay() {
-    return Math.random() * 1000 + 500; // Simular retraso en la respuesta (no estaria en caso de usar un api real)
+  getById(id: string): Observable<SuperHero> {
+    return this.http.get<SuperHero>(`${this.MOCK_PREFIX}/heroes/${id}`);
   }
+
 
 }

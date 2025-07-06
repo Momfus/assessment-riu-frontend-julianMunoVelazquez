@@ -19,6 +19,10 @@ export const superHeroesRoutes: Routes = [
         component: SuperheroDetailComponent
       },
       {
+        path: 'hero/edit/:id',
+        component: SuperheroDetailComponent
+      },
+      {
         path: '**',
         component: PageNotFoundComponent
       }
