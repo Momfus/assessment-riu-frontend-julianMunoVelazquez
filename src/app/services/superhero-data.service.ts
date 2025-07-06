@@ -59,6 +59,10 @@ export class SuperheroDataService {
     return this.api.update(hero).pipe(tap(() => this.refreshData()));
   }
 
+  delete(id: string) {
+    return this.api.delete(id).pipe(tap(() => this.refreshData()));
+  }
+
   refreshData() {
     this.refresh$.next();
   }
