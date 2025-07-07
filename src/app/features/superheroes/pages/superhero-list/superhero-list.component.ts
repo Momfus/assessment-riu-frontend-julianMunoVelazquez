@@ -67,14 +67,12 @@ export class SuperheroListComponent implements OnInit {
   });
 
   ngOnInit() {
-    // Chequea con los queryParams de la ruta actual
     this.route.queryParams.subscribe((params) => {
       const page = params['page'] ? Number(params['page']) - 1 : 0;
       const pageSize = params['pageSize'] ? Number(params['pageSize']) : 10;
       this.dataService.setPageIndex(page);
       this.dataService.setPageSize(pageSize);
 
-      // para la búsqueda de filtro
       if (params['search']) {
         this.dataService.searchHeroes(params['search']);
       }
@@ -144,7 +142,6 @@ export class SuperheroListComponent implements OnInit {
 
   navigateToDetail(hero: SuperHero, event: MouseEvent) {
 
-    // Esto previene la navegación si se hizo click en un botón de acción
     const target = event.target as HTMLElement;
     if (target.tagName === 'BUTTON' || target.closest('button')) {
       return;

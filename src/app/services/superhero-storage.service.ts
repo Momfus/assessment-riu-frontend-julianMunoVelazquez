@@ -1,8 +1,6 @@
 import { Injectable, Signal, signal } from '@angular/core';
 import { SuperHero } from '@interfaces/superhero.interface';
 
-// NOTA: Este servicio es para simular una base de datos local con localStorage
-
 @Injectable({
   providedIn: 'root'
 })
