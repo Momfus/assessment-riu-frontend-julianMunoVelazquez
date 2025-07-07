@@ -43,7 +43,7 @@ export class SuperheroListComponent implements OnInit {
   private dialog = inject(MatDialog);
 
   dataService = inject(SuperheroDataService);
-  spinnerSerrvice = inject(SpinnerService);
+  spinnerService = inject(SpinnerService);
   router = inject(Router);
   route = inject(ActivatedRoute);
 
