@@ -141,4 +141,14 @@ export class SuperheroListComponent implements OnInit {
       }
     });
   }
+
+  navigateToDetail(hero: SuperHero, event: MouseEvent) {
+
+    // Esto previene la navegación si se hizo click en un botón de acción
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'BUTTON' || target.closest('button')) {
+      return;
+    }
+    this.router.navigate(['hero', hero.id], { relativeTo: this.route });
+  }
 }
