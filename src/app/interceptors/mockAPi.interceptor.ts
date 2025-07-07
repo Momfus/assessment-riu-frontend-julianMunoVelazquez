@@ -25,6 +25,22 @@ export const mockHttpInterceptor: HttpInterceptorFn = (req, next) => {
     ).pipe(delay(100));
   }
 
+  if (req.method === 'GET' && req.url.includes('?name_like=')) {
+    const urlParts = req.url.split('?name_like=');
+    const term = urlParts.length > 1 ? decodeURIComponent(urlParts[1]).toLowerCase() : '';
+
+    const heroes = storage.getAll()().filter(h =>
+      h.name.toLowerCase().includes(term)
+    );
+
+    return of(
+      new HttpResponse({
+        status: 200,
+        body: heroes,
+      })
+    ).pipe(delay(mockDelay));
+  }
+
   if (req.method === 'POST' && req.url.endsWith('/heroes')) {
     const heroData = req.body as Omit<
       SuperHero,

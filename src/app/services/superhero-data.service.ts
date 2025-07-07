@@ -13,6 +13,8 @@ export class SuperheroDataService {
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
 
+  private searchTerm = signal<string>('');
+
   private refresh$ = new Subject<void>();
 
   // Paginación
@@ -25,7 +27,11 @@ export class SuperheroDataService {
   allHeroes = toSignal(
     this.refresh$.pipe(
       startWith(null),
-      switchMap(() => this.api.getAll())
+      switchMap(() =>
+        this.searchTerm()
+          ? this.api.search(this.searchTerm())
+          : this.api.getAll()
+      )
     ),
     { initialValue: [] }
   );
@@ -82,6 +88,15 @@ export class SuperheroDataService {
     );
   }
 
+  searchHeroes(term: string) {
+    this.searchTerm.set(term);
+    this.refreshData();
+  }
+
+  clearSearch() {
+    this.searchTerm.set('');
+    this.refreshData();
+  }
 
   refreshData() {
     this.refresh$.next();

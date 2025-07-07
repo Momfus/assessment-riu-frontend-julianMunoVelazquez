@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { SuperheroDataService } from '@services/superhero-data.service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { Observable } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
 import { SuperHero } from '@interfaces/superhero.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -20,6 +20,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { SuperheroModalFormComponent } from '@superheroes/shared/superhero-modal-form/superhero-modal-form.component';
 import { SuperheroModalConfirmComponent } from '@superheroes/shared/superhero-modal-confirm/superhero-modal-confirm.component';
 import { UpperCasePipe } from '@angular/common';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-superhero-list',
@@ -29,7 +30,8 @@ import { UpperCasePipe } from '@angular/common';
     MatButtonModule,
     MatIconModule,
     MatInputModule,
-    UpperCasePipe
+    UpperCasePipe,
+    ReactiveFormsModule
   ],
   templateUrl: './superhero-list.component.html',
   styleUrl: './superhero-list.component.css',
@@ -44,6 +46,8 @@ export class SuperheroListComponent implements OnInit {
   route = inject(ActivatedRoute);
 
   displayedColumns = ['name', 'publisher', 'actions'];
+  searchControl = new FormControl('');
+  private searchTerm$ = new Subject<string>();
 
   heroesResource = rxResource({
     params: () => ({}),
@@ -69,6 +73,37 @@ export class SuperheroListComponent implements OnInit {
       const pageSize = params['pageSize'] ? Number(params['pageSize']) : 10;
       this.dataService.setPageIndex(page);
       this.dataService.setPageSize(pageSize);
+
+      // para la búsqueda de filtro
+      if (params['search']) {
+        this.searchControl.setValue(params['search']);
+        this.dataService.searchHeroes(params['search']);
+      }
+
+      // Debounce para el input de búsqueda
+      this.searchControl.valueChanges
+        .pipe(debounceTime(300), distinctUntilChanged())
+        .subscribe((term) => {
+          if (term) {
+            this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams: {
+                search: term,
+                page: 1, // Resetear a la primera página al buscar
+              },
+              queryParamsHandling: 'merge',
+            });
+            this.dataService.searchHeroes(term);
+          } else {
+            // Si el término está vacío, limpiar la búsqueda
+            this.router.navigate([], {
+              relativeTo: this.route,
+              queryParams: { search: null },
+              queryParamsHandling: 'merge',
+            });
+            this.dataService.clearSearch();
+          }
+        });
     });
   }
 
