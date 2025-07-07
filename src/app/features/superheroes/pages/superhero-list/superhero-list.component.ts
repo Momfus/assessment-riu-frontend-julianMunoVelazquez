@@ -19,6 +19,9 @@ import { SpinnerService } from '@shared/services/spinner.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SuperheroModalFormComponent } from '@superheroes/shared/superhero-modal-form/superhero-modal-form.component';
 import { SuperheroModalConfirmComponent } from '@superheroes/shared/superhero-modal-confirm/superhero-modal-confirm.component';
+import { UpperCasePipe } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SuperheroFilterListComponent } from './superhero-filter-list/superhero-filter-list.component';
 
 @Component({
   selector: 'app-superhero-list',
@@ -28,6 +31,9 @@ import { SuperheroModalConfirmComponent } from '@superheroes/shared/superhero-mo
     MatButtonModule,
     MatIconModule,
     MatInputModule,
+    UpperCasePipe,
+    ReactiveFormsModule,
+    SuperheroFilterListComponent
   ],
   templateUrl: './superhero-list.component.html',
   styleUrl: './superhero-list.component.css',
@@ -37,7 +43,7 @@ export class SuperheroListComponent implements OnInit {
   private dialog = inject(MatDialog);
 
   dataService = inject(SuperheroDataService);
-  spinnerSerrvice = inject(SpinnerService);
+  spinnerService = inject(SpinnerService);
   router = inject(Router);
   route = inject(ActivatedRoute);
 
@@ -67,6 +73,12 @@ export class SuperheroListComponent implements OnInit {
       const pageSize = params['pageSize'] ? Number(params['pageSize']) : 10;
       this.dataService.setPageIndex(page);
       this.dataService.setPageSize(pageSize);
+
+      // para la búsqueda de filtro
+      if (params['search']) {
+        this.dataService.searchHeroes(params['search']);
+      }
+
     });
   }
 
@@ -79,6 +91,24 @@ export class SuperheroListComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
     });
+  }
+
+  onSearchChange(term: string) {
+    if (term) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { search: term, page: 1 },
+        queryParamsHandling: 'merge'
+      });
+      this.dataService.searchHeroes(term);
+    } else {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { search: null },
+        queryParamsHandling: 'merge'
+      });
+      this.dataService.clearSearch();
+    }
   }
 
   editHero(hero: SuperHero) {
@@ -110,5 +140,15 @@ export class SuperheroListComponent implements OnInit {
         });
       }
     });
+  }
+
+  navigateToDetail(hero: SuperHero, event: MouseEvent) {
+
+    // Esto previene la navegación si se hizo click en un botón de acción
+    const target = event.target as HTMLElement;
+    if (target.tagName === 'BUTTON' || target.closest('button')) {
+      return;
+    }
+    this.router.navigate(['hero', hero.id], { relativeTo: this.route });
   }
 }

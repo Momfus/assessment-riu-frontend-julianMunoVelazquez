@@ -1,1 +1,92 @@
-<p>superhero-detail works!</p>,
+<div class="container mx-auto p-4 max-w-4xl">
+  <button
+    mat-raised-button
+    color="primary"
+    (click)="goBack()"
+    class="mb-4">
+    <mat-icon>arrow_back</mat-icon>
+    Back
+  </button>
+
+  @if (hero()) {
+    <mat-card class="p-6 shadow-lg">
+      <mat-card-header class="mb-4">
+        <mat-card-title class="text-3xl font-bold">
+          {{ hero()?.name | uppercase }}
+        </mat-card-title>
+        <mat-card-subtitle class="text-lg">
+          @if (hero()?.realName) {
+            {{ hero()?.realName }}
+          } @else {
+            Unknown real name
+          }
+        </mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <!-- Universe -->
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Universe</h3>
+            <span
+              class="px-4 py-2 rounded-full text-sm font-medium {{ getUniverseColor(hero()?.universe || 'Unknow') }}">
+              {{ hero()?.universe }}
+            </span>
+          </div>
+
+          <!-- Dates -->
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Dates</h3>
+            <div class="space-y-1">
+              <p>Created: {{ hero()?.createdAt | date:'MM/dd/yyyy' }}</p>
+              <p>Last updated: {{ hero()?.updatedAt | date:'MM/dd/yyyy' }}</p>
+            </div>
+          </div>
+
+          <!-- Powers -->
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Powers</h3>
+            @if (hero()?.powers?.length) {
+              <div class="flex flex-wrap gap-2">
+                @for (power of hero()?.powers; track power) {
+                  <mat-chip class="bg-green-100 text-green-800">
+                    {{ power }}
+                  </mat-chip>
+                }
+              </div>
+            } @else {
+              <p class="text-gray-500">Unknown powers</p>
+            }
+          </div>
+
+          <!-- Weaknesses -->
+          <div>
+            <h3 class="text-lg font-semibold mb-2">Weaknesses</h3>
+            @if (hero()?.weaknesses?.length) {
+              <div class="flex flex-wrap gap-2">
+                @for (weakness of hero()?.weaknesses; track weakness) {
+                  <mat-chip class="bg-red-100 text-red-800">
+                    {{ weakness }}
+                  </mat-chip>
+                }
+              </div>
+            } @else {
+              <p class="text-gray-500">Unknown weaknesses</p>
+            }
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  } @else {
+    @if(spinnerService.isLoading()) {
+      <div class="text-center py-10">
+        <p class="text-xl">Loading Hero...</p>
+      </div>
+    }@else {
+      <div class="text-center py-10">
+        <mat-icon class="text-6xl mb-4">warning</mat-icon>
+        <p class="text-xl">Hero not found</p>
+      </div>
+    }
+  }
+</div>
