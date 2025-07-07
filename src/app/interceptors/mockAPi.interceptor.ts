@@ -41,6 +41,19 @@ export const mockHttpInterceptor: HttpInterceptorFn = (req, next) => {
     ).pipe(delay(mockDelay));
   }
 
+  if (req.method === 'GET' && req.url.match(/\/heroes\/[^/]+$/)) {
+    const id = req.url.split('/').pop();
+    const hero = storage.getById(id!);
+
+    return of(
+      new HttpResponse({
+        status: hero ? 200 : 404,
+        body: hero,
+      })
+    ).pipe(delay(mockDelay));
+  }
+
+
   if (req.method === 'POST' && req.url.endsWith('/heroes')) {
     const heroData = req.body as Omit<
       SuperHero,
