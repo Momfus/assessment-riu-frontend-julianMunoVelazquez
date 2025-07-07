@@ -19,6 +19,7 @@ import { SpinnerService } from '@shared/services/spinner.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SuperheroModalFormComponent } from '@superheroes/shared/superhero-modal-form/superhero-modal-form.component';
 import { SuperheroModalConfirmComponent } from '@superheroes/shared/superhero-modal-confirm/superhero-modal-confirm.component';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-superhero-list',
@@ -28,6 +29,7 @@ import { SuperheroModalConfirmComponent } from '@superheroes/shared/superhero-mo
     MatButtonModule,
     MatIconModule,
     MatInputModule,
+    UpperCasePipe
   ],
   templateUrl: './superhero-list.component.html',
   styleUrl: './superhero-list.component.css',
