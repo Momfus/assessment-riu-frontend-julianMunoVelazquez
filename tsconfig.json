@@ -12,6 +12,7 @@
       "@core/*": ["src/app/core/*"],
       "@interfaces/*": ["src/app/interfaces/*"],
       "@services/*": ["src/app/services/*"],
+      "@directives/*": ["src/app/shared/directives*"],
     },
     "strict": true,
     "noImplicitOverride": true,

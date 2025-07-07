@@ -5,6 +5,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
 import { CommonModule } from '@angular/common';
+import { ToUpperCaseDirective } from '@shared/directives/ToUpperCaseDirective.directive';
 
 @Component({
   selector: 'superhero-form',
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
     MatInputModule,
     MatSelectModule,
     MatButtonModule,
+    ToUpperCaseDirective
   ],
   templateUrl: './superhero-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

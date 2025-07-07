@@ -32,5 +32,8 @@ export class SuperheroApiService {
     return this.http.get<SuperHero>(`${this.MOCK_PREFIX}/heroes/${id}`);
   }
 
+  search(term: string): Observable<SuperHero[]> {
+    return this.http.get<SuperHero[]>(`${this.MOCK_PREFIX}/heroes?name_like=${term}`);
+  }
 
 }

@@ -1,4 +1,8 @@
 <div class="container">
+
+  <!-- Filter -->
+  <app-superhero-filter-list (searchChange)="onSearchChange($event)"></app-superhero-filter-list>
+
   <!-- Tabla -->
   <div class="table-container">
     @if (dataService.paginatedHeroes().length > 0) {
@@ -6,7 +10,7 @@
       <!-- Columna Nombre -->
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
-        <mat-cell *matCellDef="let hero"> {{ hero.name }} </mat-cell>
+        <mat-cell *matCellDef="let hero"> {{ hero.name | uppercase }} </mat-cell>
       </ng-container>
 
       <!-- Columna Editorial -->

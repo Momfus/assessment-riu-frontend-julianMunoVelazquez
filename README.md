@@ -48,15 +48,13 @@ y descriptivos con los commits. Al momento de la entrega indicar el Repositorio.
 * Rutas y navegación de la página.
 * Interceptor para mostrar un elemento “loading” mientras se realiza alguna
 operación como “borrado” o “edición”.
-* Directiva para que al crear o editar en la caja de texto del nombre del
-héroe, siempre se muestre en mayúscula.
+* Directiva para que al crear o editar en la caja de texto del nombre del héroe, siempre se muestre en mayúscula.
 * Comunicación entre componentes orientada a eventos.
 
 ## Se valora positifvamente:
 * Cómo se construye el modelo de datos.
 * Uso de programación reactiva.
 * Código legible usando lambdas.
-
 
 ## Para correcr el proyecto
 
@@ -89,9 +87,9 @@ ng test
 
 # Dockerización de la Aplicación Angular Superheroes
 
-##Comandos Rápidos
+## Comandos Rápidos
 
-## Desarrollo (con Hot Reload)
+## Desarrollo
 ```bash
 # Ejecutar en modo desarrollo
 docker-compose --profile dev up --build
