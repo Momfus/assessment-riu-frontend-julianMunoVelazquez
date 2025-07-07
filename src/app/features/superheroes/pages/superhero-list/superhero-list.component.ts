@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { SuperheroDataService } from '@services/superhero-data.service';
 import { rxResource } from '@angular/core/rxjs-interop';
-import { debounceTime, distinctUntilChanged, Observable, Subject } from 'rxjs';
+import { Observable } from 'rxjs';
 import { SuperHero } from '@interfaces/superhero.interface';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
@@ -20,7 +20,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { SuperheroModalFormComponent } from '@superheroes/shared/superhero-modal-form/superhero-modal-form.component';
 import { SuperheroModalConfirmComponent } from '@superheroes/shared/superhero-modal-confirm/superhero-modal-confirm.component';
 import { UpperCasePipe } from '@angular/common';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { SuperheroFilterListComponent } from './superhero-filter-list/superhero-filter-list.component';
 
 @Component({
   selector: 'app-superhero-list',
@@ -31,7 +32,8 @@ import { FormControl, ReactiveFormsModule } from '@angular/forms';
     MatIconModule,
     MatInputModule,
     UpperCasePipe,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SuperheroFilterListComponent
   ],
   templateUrl: './superhero-list.component.html',
   styleUrl: './superhero-list.component.css',
@@ -46,8 +48,6 @@ export class SuperheroListComponent implements OnInit {
   route = inject(ActivatedRoute);
 
   displayedColumns = ['name', 'publisher', 'actions'];
-  searchControl = new FormControl('');
-  private searchTerm$ = new Subject<string>();
 
   heroesResource = rxResource({
     params: () => ({}),
@@ -76,34 +76,9 @@ export class SuperheroListComponent implements OnInit {
 
       // para la búsqueda de filtro
       if (params['search']) {
-        this.searchControl.setValue(params['search']);
         this.dataService.searchHeroes(params['search']);
       }
 
-      // Debounce para el input de búsqueda
-      this.searchControl.valueChanges
-        .pipe(debounceTime(300), distinctUntilChanged())
-        .subscribe((term) => {
-          if (term) {
-            this.router.navigate([], {
-              relativeTo: this.route,
-              queryParams: {
-                search: term,
-                page: 1, // Resetear a la primera página al buscar
-              },
-              queryParamsHandling: 'merge',
-            });
-            this.dataService.searchHeroes(term);
-          } else {
-            // Si el término está vacío, limpiar la búsqueda
-            this.router.navigate([], {
-              relativeTo: this.route,
-              queryParams: { search: null },
-              queryParamsHandling: 'merge',
-            });
-            this.dataService.clearSearch();
-          }
-        });
     });
   }
 
@@ -116,6 +91,24 @@ export class SuperheroListComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
     });
+  }
+
+  onSearchChange(term: string) {
+    if (term) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { search: term, page: 1 },
+        queryParamsHandling: 'merge'
+      });
+      this.dataService.searchHeroes(term);
+    } else {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { search: null },
+        queryParamsHandling: 'merge'
+      });
+      this.dataService.clearSearch();
+    }
   }
 
   editHero(hero: SuperHero) {

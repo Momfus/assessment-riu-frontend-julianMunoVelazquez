@@ -1,17 +1,7 @@
 <div class="container">
 
   <!-- Filter -->
-  <div class="search-container">
-    <mat-form-field class="w-full">
-      <mat-label>Search Heroes</mat-label>
-      <input
-        matInput
-        [formControl]="searchControl"
-        placeholder="Type hero name..."
-      >
-      <mat-icon matSuffix>search</mat-icon>
-    </mat-form-field>
-  </div>
+  <app-superhero-filter-list (searchChange)="onSearchChange($event)"></app-superhero-filter-list>
 
   <!-- Tabla -->
   <div class="table-container">
