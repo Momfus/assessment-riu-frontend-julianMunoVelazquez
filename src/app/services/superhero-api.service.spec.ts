@@ -190,7 +190,7 @@ describe('SuperheroApiService', () => {
 
   describe('search', () => {
     it('should search heroes by term', (done) => {
-      const searchResults = [MOCK_HEROES[1]]; // Spiderman
+      const searchResults = [MOCK_HEROES[1]];
       httpSpy.get.and.returnValue(of(searchResults));
 
       service.search('spider').subscribe({
