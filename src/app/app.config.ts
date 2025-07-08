@@ -4,7 +4,7 @@ import { provideRouter, withHashLocation } from '@angular/router';
 import { routes } from './app.routes';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { spinnerInterceptor } from '@interceptors/spinner.interceptor';
-import { mockHttpInterceptor } from '@interceptors/mockAPi.interceptor';
+import { mockHttpInterceptor } from '@interceptors/mockAPI.interceptor';
 
 
 export const appConfig: ApplicationConfig = {
