@@ -39,7 +39,6 @@ export class SuperheroFormComponent {
 
   constructor() {
 
-    // Reacción a cambios en el input hero
     effect(() => {
       const currentHero = this.hero();
       if (currentHero) {

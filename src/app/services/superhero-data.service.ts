@@ -17,7 +17,6 @@ export class SuperheroDataService {
 
   private refresh$ = new Subject<void>();
 
-  // Paginación
   pagination = signal({
     pageIndex: 0,
     pageSize: 10,
@@ -102,7 +101,6 @@ export class SuperheroDataService {
     this.refresh$.next();
   }
 
-  // Paginación
   setPageIndex(pageIndex: number): void {
     this.pagination.update((prev) => {
       const newIndex = Math.max(0, Math.min(pageIndex, this.totalPages() - 1));
@@ -140,7 +138,6 @@ export class SuperheroDataService {
         pageIndex: newPageIndex,
       }));
 
-      // Actualizar los queryParams en la URL
       this.router.navigate([], {
         relativeTo: this.activatedRoute,
         queryParams: {
