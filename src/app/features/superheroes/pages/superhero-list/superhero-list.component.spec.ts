@@ -124,7 +124,7 @@ describe('SuperheroListComponent', () => {
 
       component.ngOnInit();
 
-      expect(dataServiceSpy.setPageIndex).toHaveBeenCalledWith(1); // page - 1
+      expect(dataServiceSpy.setPageIndex).toHaveBeenCalledWith(1);
       expect(dataServiceSpy.setPageSize).toHaveBeenCalledWith(20);
     });
 
@@ -172,7 +172,7 @@ describe('SuperheroListComponent', () => {
       expect(routerSpy.navigate).toHaveBeenCalledWith([], {
         relativeTo: routeSpy,
         queryParams: {
-          page: 3, // pageIndex + 1
+          page: 3,
           pageSize: 20,
         },
         queryParamsHandling: 'merge',
@@ -384,7 +384,6 @@ describe('SuperheroListComponent', () => {
 
     it('should display hero names in uppercase', () => {
       const nameCells = fixture.debugElement.queryAll(By.css('mat-cell'));
-      // Filtrar solo los de nombre (buscando SUPERMAN y SPIDERMAN)
       const heroNames = nameCells
         .map(cell => cell.nativeElement.textContent.trim())
         .filter(text => text === 'SUPERMAN' || text === 'SPIDERMAN');
@@ -394,7 +393,6 @@ describe('SuperheroListComponent', () => {
 
     it('should display universe names', () => {
       const universeCells = fixture.debugElement.queryAll(By.css('mat-cell'));
-      // Filtrar solo los de universo (buscando DC y Marvel)
       const universes = universeCells
         .map(cell => cell.nativeElement.textContent.trim())
         .filter(text => text === 'DC' || text === 'Marvel');
@@ -446,7 +444,6 @@ describe('SuperheroListComponent', () => {
       fixture.detectChanges();
       const warningIcon = fixture.debugElement.query(By.css('mat-icon'));
       expect(warningIcon).toBeTruthy();
-      // Ajusta aquí según el icono real que se muestra en el template:
       expect(warningIcon.nativeElement.textContent.trim().toLowerCase()).toContain('search');
     });
 
