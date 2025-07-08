@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpRequest, HttpHandlerFn, HttpInterceptorFn, HttpResponse } from '@angular/common/http';
+import { HttpRequest, HttpHandlerFn, HttpResponse } from '@angular/common/http';
 import { of } from 'rxjs';
 import { mockHttpInterceptor } from './mockAPI.interceptor';
 import { SuperheroStorageService } from '@services/superhero-storage.service';
