@@ -7,6 +7,7 @@ import { spinnerInterceptor } from '@interceptors/spinner.interceptor';
 import { mockHttpInterceptor } from '@interceptors/mockAPI.interceptor';
 
 
+
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
