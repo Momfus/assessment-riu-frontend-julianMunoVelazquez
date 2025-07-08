@@ -16,7 +16,6 @@ export class ToUpperCaseDirective {
       this.control.control.setValue(input.value.toUpperCase(), { emitEvent: false });
     }
 
-    // Esto tuve que colocarlo para prevenir el loop
     setTimeout(() => {
       input.setSelectionRange(startPos, startPos);
     });

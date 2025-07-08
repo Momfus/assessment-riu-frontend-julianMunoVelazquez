@@ -5,7 +5,6 @@ import { delay, of } from 'rxjs';
 import { HttpResponse } from '@angular/common/http';
 import { SuperHero } from '@interfaces/superhero.interface';
 
-// NOTA: Este interceptor simula una API REST para los superhéroes ( es para que pueda funcionar el otro interceptor de spinner)
 export const mockHttpInterceptor: HttpInterceptorFn = (req, next) => {
   const storage = inject(SuperheroStorageService);
 

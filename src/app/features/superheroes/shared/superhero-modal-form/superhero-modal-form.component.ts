@@ -37,7 +37,6 @@ export class SuperheroModalFormComponent {
   readonly data = inject<{ hero?: SuperHero }>(MAT_DIALOG_DATA);
 
   onFormSubmit(heroData: Partial<SuperHero>) {
-    // Esto es para asegurarme los campos requeridos
     const safeData = {
       ...heroData,
       name: heroData.name!,
@@ -46,7 +45,7 @@ export class SuperheroModalFormComponent {
     } as Omit<SuperHero, 'id' | 'createdAt' | 'updatedAt'>;
 
     if (this.data?.hero) {
-      // Edición
+
       this.dataService
         .update({
           ...safeData,
@@ -60,7 +59,7 @@ export class SuperheroModalFormComponent {
           },
         });
     } else {
-      // Creación
+
       this.dataService.create(safeData).subscribe({
         next: () => this.successHeroEditCreate(),
         error: (error: Error) => {
